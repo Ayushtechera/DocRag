@@ -1,5 +1,4 @@
 """Document processing module for loading and splitting documents"""
-
 from typing import List
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -26,6 +25,7 @@ class DocumentProcessor:
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap
         )
+
     def load_from_url(self,url:str)->List[Document]:
         """Load documents from urls"""
         loader=WebBaseLoader(url)
@@ -46,30 +46,10 @@ class DocumentProcessor:
         loader=PyPDFLoader(str(file_path))
         return loader.load()
 
+
     def load_documents(self,sources:List[str])->List[Document]:
-        """Load Documents from URLs , PDF directories, or TXT files
-        Args:
-            sources: List of URLs, PDF folder paths, or TXT file paths 
-        return:
-            List of loaded documents 
-        """
-
+        """Load Documents from URLs , PDF directories, or TXT files"""
         docs: List[Document]=[]
-        # for src in sources:
-        #     if src.startswith("http://") or src.startswith("https://"):
-        #         docs.extend(self.load_from_url(src))
-
-        #     path = Path("data")
-        #     if path.is_dir(): 
-        #         docs.extend(self.load_from_pdf_dir(path))
-        #     elif path.suffix.lower() == ".txt":
-        #         docs.extend(self.load_from_text(path))
-        #     else:
-        #         raise ValueError(
-        #             f"Unsupported source type: {src}. "
-        #             "Use URL, .txt file, or PDF directory."
-        #         )
-        # return docs
         for src in sources:
             if src.startswith(("http://", "https://")):
                 docs.extend(self.load_from_url(src))
@@ -87,7 +67,6 @@ class DocumentProcessor:
                 raise ValueError(f"Unsupported source type: {src}")
             
         return docs
-
 
     def split_documents(self, documents: List[Document]) -> List[Document]:
         return self.splitter.split_documents(documents)

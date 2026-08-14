@@ -7,12 +7,14 @@ from langchain_core.tools import tool
 from langchain.agents import create_agent
 from langchain_community.utilities import WikipediaAPIWrapper
 from langchain_community.tools.wikipedia.tool import WikipediaQueryRun
+
 class RAGNodes:
     """Contains node functions for RAG workflow"""
     def __init__(self, retriever, llm):
         self.retriever = retriever
         self.llm = llm
         self._agent = None
+
     def retrieve_docs(self, state: RAGState) -> RAGState:
         """Classic retriever node"""
         docs = self.retriever.invoke(state.question)
@@ -20,6 +22,7 @@ class RAGNodes:
             question=state.question,
             retrieved_docs=docs
         )
+    
     def _build_tools(self):
         """Build retriever and Wikipedia tools."""
         @tool
@@ -56,7 +59,6 @@ class RAGNodes:
 
     def _build_agent(self):
         """Build the ReAct agent with retriever and Wikipedia tools."""
-
         tools = self._build_tools()
         system_prompt = (
             "You are a helpful RAG agent. "

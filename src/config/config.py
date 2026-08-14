@@ -8,7 +8,7 @@ load_dotenv()
 class Config:
     """Configuration class for RAG system"""
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-    LLM_MODEL = "llama-3.3-70b-versatile"
+    LLM_MODEL = "openai/gpt-oss-20b"
     CHUNK_SIZE = 500
     CHUNK_OVERLAP = 50
     DEFAULT_URLS = [
